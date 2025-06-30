@@ -1,7 +1,7 @@
 ---
-- name: Install Java
+- name: Install Java (compatible version)
   yum:
-    name: java-1.8.0-openjdk
+    name: java-11-openjdk
     state: present
 
 - name: Add Jenkins repo
