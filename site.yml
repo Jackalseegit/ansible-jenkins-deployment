@@ -1,5 +1,5 @@
 ---
-- hosts: jenkins-target
+- hosts: jenkins
   become: true
   roles:
     - jenkins
