@@ -5,7 +5,7 @@ pipeline {
         stage('Clone Repo') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/your-username/ansible-jenkins-deployment.git'
+                    url: 'https://github.com/Jackalseegit/ansible-jenkins-deployment.git.git'
             }
         }
 
