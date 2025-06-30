@@ -1,24 +1,24 @@
 pipeline {
     agent any
-
+    environment {
+        ANSIBLE_HOST_KEY_CHECKING = 'False'
+    }
+    tools {
+        ansible 'ansible' // if defined in Jenkins global tool config
+    }
     stages {
         stage('Clone Repo') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/Jackalseegit/ansible-jenkins-deployment.git.git'
+                git url: 'https://github.com/Jackalseegit/ansible-jenkins-deployment.git',
+                    branch: 'main',
+                    credentialsId: 'github-creds' // make sure this ID exists
             }
         }
-
         stage('Run Ansible') {
             steps {
-                sshagent(['e3af536f-7ac5-40c5-8f98-12572dcd4bba']) {
-                    sh '''
-                    ssh -o StrictHostKeyChecking=no ec2-user@172.31.82.65 '
-                      cd ansible-jenkins-deployment &&
-                      ansible-playbook -i inventory/production site.yml
-                    '
-                    '''
-                }
+                sh '''
+                ansible-playbook -i inventory/production site.yml
+                '''
             }
         }
     }
