@@ -1,0 +1,2 @@
+[jenkins-target]
+172.31.83.63 ansible_user=ec2-user
