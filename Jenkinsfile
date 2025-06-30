@@ -3,17 +3,16 @@ pipeline {
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'False'
     }
-    tools {
-        ansible 'ansible' // if defined in Jenkins global tool config
-    }
+
     stages {
         stage('Clone Repo') {
             steps {
                 git url: 'https://github.com/Jackalseegit/ansible-jenkins-deployment.git',
                     branch: 'main',
-                    credentialsId: 'github-creds' // make sure this ID exists
+                    credentialsId: 'github-creds' // Ensure this exists
             }
         }
+
         stage('Run Ansible') {
             steps {
                 sh '''
