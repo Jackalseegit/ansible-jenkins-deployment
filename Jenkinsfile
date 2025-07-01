@@ -10,32 +10,25 @@ pipeline {
       }
     }
 
-    // New stage added here
-    stage('Add SSH Host Key') {
-      steps {
-        sh '''
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          ssh-keyscan 172.31.23.81 >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
-        '''
-      }
-    }
-
     stage('Copy to Ansible Server') {
       steps {
-        sh '''
-          ssh ansible@172.31.23.81 "rm -rf ~/ansible-jenkins-deployment"
-          scp -r . ansible@172.31.23.81:~/ansible-jenkins-deployment
-        '''
+        sshagent(credentials: ['jenkins-ansible-key']) {
+          sh '''
+            ssh -o BatchMode=yes ansible@172.31.23.81 "rm -rf ~/ansible-jenkins-deployment"
+            scp -o BatchMode=yes -r . ansible@172.31.23.81:~/ansible-jenkins-deployment
+          '''
+        }
       }
     }
 
     stage('Trigger Ansible Playbook') {
       steps {
-        sh '''
-          ssh ansible@172.31.23.81 "cd ~/ansible-jenkins-deployment && ansible-playbook -i inventory/production site.yml"
-        '''
+        sshagent(credentials: ['jenkins-ansible-key']) {
+          sh '''
+            ssh -o BatchMode=yes ansible@172.31.23.81 \
+              "cd ~/ansible-jenkins-deployment && ansible-playbook -i inventory/production site.yml"
+          '''
+        }
       }
     }
   }
