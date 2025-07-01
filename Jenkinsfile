@@ -10,6 +10,18 @@ pipeline {
       }
     }
 
+    // New stage added here
+    stage('Add SSH Host Key') {
+      steps {
+        sh '''
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan 172.31.23.81 >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+        '''
+      }
+    }
+
     stage('Copy to Ansible Server') {
       steps {
         sh '''
