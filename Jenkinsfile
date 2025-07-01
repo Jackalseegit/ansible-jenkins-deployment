@@ -5,8 +5,8 @@ pipeline {
     stage('Checkout Git') {
       steps {
         git branch: 'main',
-            credentialsId: 'your-git-creds-id',
-            url: 'git branch: 'main', credentialsId: 'abe97d2c-9bcd-4614-bcb5-b23d66d13ca9', url: 'https://github.com/Jackalseegit/ansible-jenkins-deployment.git''
+            credentialsId: 'abe97d2c-9bcd-4614-bcb5-b23d66d13ca9',
+            url: 'https://github.com/Jackalseegit/ansible-jenkins-deployment.git'
       }
     }
 
